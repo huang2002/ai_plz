@@ -14,7 +14,7 @@ dependencies = [
 ]
 
 [project.scripts]
-plz = "ai_plz.__main__:main"
+plz = "ai_plz:main"
 
 [build-system]
 requires = ["hatchling"]
