@@ -1,0 +1,21 @@
+[project]
+name = "ai_plz"
+version = "0.1.0"
+description = "A simple command-line helper powered by LLM."
+readme = "README.md"
+authors = [{ name = "huang2002", email = "huanghaihua2002@qq.com" }]
+requires-python = ">=3.12"
+dependencies = [
+    "click>=8.3.1",
+    "openai>=2.30.0",
+    "pydantic>=2.12.5",
+    "pydantic-settings>=2.13.1",
+    "python-dotenv>=1.2.2",
+]
+
+[project.scripts]
+plz = "ai_plz.__main__:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
