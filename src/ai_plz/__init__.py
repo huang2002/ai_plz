@@ -63,9 +63,8 @@ def main(
     # Show env vars when requested
     if show_vars:
         print("Recognizable environment variables:")
-        env_prefix = Config.model_config.get("env_prefix", "")
-        for key, field in Config.model_fields.items():
-            var_name = env_prefix + key.upper()
+        for field_name, field in Config.model_fields.items():
+            var_name = Config.get_env_var_name(field_name)
             field_type = field.annotation
             if isinstance(field_type, type):
                 type_name = field_type.__name__

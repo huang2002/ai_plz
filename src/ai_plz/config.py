@@ -1,7 +1,7 @@
 from logging import getLogger
-from typing import Any, override
+from typing import Any, Self, override
 
-from pydantic import Field, SecretStr
+from pydantic import Field, SecretStr, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 logger = getLogger(__name__)
@@ -34,3 +34,25 @@ class Config(BaseSettings):
     @override
     def model_post_init(self, context: Any) -> None:
         logger.debug(f"Config loaded: {self!r}")
+
+    @model_validator(mode="after")
+    def validate_required_fields(self) -> Self:
+        missing_fields = set(
+            field_name
+            for field_name in ("api_key", "model")
+            if not getattr(self, field_name)
+        )
+        if len(missing_fields) > 0:
+            fields_str = ", ".join(missing_fields)
+            vars_str = ", ".join(map(self.get_env_var_name, missing_fields))
+            base_url_str = self.get_env_var_name("base_url")
+            raise RuntimeError(
+                f"The following config items are required but not set: {fields_str}. "
+                f"You should provide the following environment variables for them: {vars_str}. "
+                f"You may also specify the base URL for LLM API through {base_url_str}."
+            )
+        return self
+
+    @classmethod
+    def get_env_var_name(cls, field_name: str) -> str:
+        return cls.model_config.get("env_prefix", "") + field_name.upper()
