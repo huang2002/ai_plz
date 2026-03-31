@@ -1,6 +1,6 @@
 [project]
 name = "ai_plz"
-version = "0.1.0"
+version = "0.1.1"
 description = "A simple command-line helper powered by LLM."
 readme = "README.md"
 authors = [{ name = "huang2002", email = "huanghaihua2002@qq.com" }]
